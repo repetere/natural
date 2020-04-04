@@ -1,5 +1,5 @@
 {
-  "name": "natural",
+  "name": "@reptere/natural",
   "description": "General natural language (tokenizing, stemming (English, Russian, Spanish), part-of-speech tagging, sentiment analysis, classification, inflection, phonetics, tfidf, WordNet, jaro-winkler, Levenshtein distance, Dice's Coefficient) facilities for node.",
   "version": "0.6.3",
   "homepage": "https://github.com/NaturalNode/natural",
@@ -17,27 +17,69 @@
     "sylvester": "^0.0.12",
     "underscore": "^1.9.1",
     "webpack": "^4.29.0",
+    "webworker-threads": "^0.7.17",
     "wordnet-db": "^3.1.11"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^3.0.1",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-json": "^4.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "@rollup/plugin-replace": "^2.3.1",
+    "@rollup/plugin-sucrase": "^3.0.0",
+    "@rollup/plugin-typescript": "^3.1.1",
+    "@types/chai": "^4.2.11",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^25.1.4",
+    "@types/react": "^16.9.31",
+    "@types/react-dom": "^16.9.6",
+    "@types/sinon": "^9.0.0",
     "browserfs": "^1.4.3",
+    "chai": "^4.2.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "gulp": "^4.0.0",
     "gulp-jasmine": "^4.0.0",
     "gulp-jasmine-browser": "^4.1.0",
+    "install": "^0.13.0",
     "jasmine": "^3.3.1",
     "jasmine-core": "^3.3.0",
+    "jest": "^25.2.6",
+    "npm": "^6.14.4",
     "pegjs": "^0.10.0",
     "proxyquire": "^1.8.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "rimraf": "^2.6.3",
-    "sinon": "^1.12.2",
+    "rollup": "^2.3.2",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-terser-js": "^1.0.2",
+    "sinon": "^9.0.1",
+    "ts-jest": "^25.3.0",
+    "tslib": "^1.11.1",
+    "typedoc": "^0.17.3",
+    "typescript": "^3.8.3",
     "uubench": "^0.0.1",
     "webpack-stream": "^5.2.1"
   },
+  "jest": {
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
+  },
   "scripts": {
-    "benchmark": "node benchmarks",
-    "clean": "rimraf *~ #* *classifier.json",
-    "test": "NODE_PATH=. node ./node_modules/jasmine/bin/jasmine.js --random=false spec/*_spec.js",
-    "test_io": "NODE_PATH=. node ./node_modules/jasmine/bin/jasmine.js --random=false io_spec/*_spec.js"
+    "dev": "rollup -c -w",
+    "benchmark": "node -r esm  benchmark/main_bmrk.js",
+    "test": "jest --coverage",
+    "doc": "tsc && typedoc && sitedown manual/ -b docs/manual",
+    "compile": "tsc",
+    "build": "tsc && node --max-old-space-size=8192 node_modules/rollup/bin/rollup -c rollup-config.js && typedoc && sitedown manual/ -b docs/manual",
+    "coverage": "coveralls"
   },
   "license": "MIT",
   "author": "Chris Umbel <chris@chrisumbel.com>",
@@ -72,7 +114,13 @@
     "sentiment analysis",
     "maximum entropy modelling"
   ],
-  "main": "./lib/natural/index.js",
+  "main": "dist/index.cjs.js",
+  "module": "build/index.js",
+  "esm": "dist/index.esm.js",
+  "browser": "dist/index.umd.js",
+  "web": "dist/index.web.js",
+  "modules.root": "build",
+  "type": "module",
   "maintainers": [
     {
       "name": "Chris Umbel",
